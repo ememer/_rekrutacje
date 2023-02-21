@@ -28,25 +28,45 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
-    'plugin:jsx-a11y/recommended',
+    // 'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended', // Make sure this is always the last element in the array.
   ],
   plugins: ['simple-import-sort', 'prettier'],
   rules: {
+    'no-unused-vars': 'error',
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'react/react-in-jsx-scope': 'off',
     'jsx-a11y/accessible-emoji': 'off',
     'react/prop-types': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
-    'jsx-a11y/anchor-is-valid': [
+    'simple-import-sort/imports': [
       'error',
       {
-        components: ['Link'],
-        specialLink: ['hrefLeft', 'hrefRight'],
-        aspects: ['invalidHref', 'preferButton'],
+        groups: [
+          // React-related imports
+          ['^react$', '^prop-types$'],
+          // other external imports
+          ['^@?\\w'],
+          // app's internal relative imports
+          ['^../../../'],
+          ['^../../'],
+          ['^../'],
+          ['^./'],
+          // image imports
+          ['^.*\\.(png|jpg)$'],
+          // CSS imports
+          ['^\\u0000\\S+.css$', '^\\u0000\\S+(?<!.css)$'],
+        ],
       },
     ],
+    // 'jsx-a11y/anchor-is-valid': [
+    //   'error',
+    //   {
+    //     components: ['Link'],
+    //     specialLink: ['hrefLeft', 'hrefRight'],
+    //     aspects: ['invalidHref', 'preferButton'],
+    //   },
+    // ],
   },
 };

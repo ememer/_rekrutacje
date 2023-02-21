@@ -1,8 +1,8 @@
-import './App.css';
-
 import React, { useState } from 'react';
 
 import logo from './logo.svg';
+
+import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -11,7 +11,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p className="header">
+        <p className="header text-red-400">
           🚀 Vite + React + Typescript 🤘 & <br />
           Eslint 🔥+ Prettier
         </p>
