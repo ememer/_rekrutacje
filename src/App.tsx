@@ -1,52 +1,40 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 
-import logo from './logo.svg';
+import { Link } from 'react-router-dom';
+
+import FormSection from './components/FormSection';
+import { AutoCompleteContext } from './Context/AutoCompleteContext';
+import { AutoCompleteContextTypes } from './Types/AutoCompleteContextTypes';
 
 import './App.css';
 
+const btnEnabled = 'w-1/4 block ml-auto p-4 bg-green-500 text-gray-800';
+const btnDisabled = 'w-1/4 block ml-auto p-4 bg-gray-500 text-white';
+
 function App() {
-  const [count, setCount] = useState(0);
+  const { isValid } = useContext(AutoCompleteContext) as AutoCompleteContextTypes;
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="header text-red-400">
-          🚀 Vite + React + Typescript 🤘 & <br />
-          Eslint 🔥+ Prettier
-        </p>
-
-        <div className="body">
-          <button onClick={() => setCount((count) => count + 1)}>
-            🪂 Click me : {count}
+    <div className="container mx-auto">
+      <form className="w-3/4 mx-auto">
+        <FormSection
+          addressTitle="Adres trasy początkowej"
+          cityTitle="Miasto trasy początkowej"
+          numberTitle="Numer budynku trasy początkowej"
+          destinationType="originDestination"
+        />
+        <FormSection
+          addressTitle="Adres trasy końcowej"
+          cityTitle="Miasto trasy końcowej"
+          numberTitle="Numer budynku trasy końcowej"
+          destinationType="destination"
+        />
+        <div className="p-2 w-full">
+          <button disabled={!isValid} className={isValid ? btnEnabled : btnDisabled}>
+            <Link to={isValid ? '/calculated-road' : '#'}>Oblicz trase</Link>
           </button>
-
-          <p> Don&apos;t forgot to install Eslint and Prettier in Your Vscode.</p>
-
-          <p>
-            Mess up the code in <code>App.tsx </code> and save the file.
-          </p>
-          <p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-            {' | '}
-            <a
-              className="App-link"
-              href="https://vitejs.dev/guide/features.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Vite Docs
-            </a>
-          </p>
         </div>
-      </header>
+      </form>
     </div>
   );
 }
