@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
+
+import { debounce } from 'lodash';
 
 import { AutoCompleteContext } from '../Context/AutoCompleteContext';
 import { useForm } from '../Hook/useForm';
@@ -37,6 +39,39 @@ const FormSection = ({
     destinationType === 'originDestination' ? originDestination : destination,
   );
 
+  const getAutoCompleted = async ({ address, city, number }: DEF_STATE_TYPE) => {
+    const URL = 'https://autocomplete.search.hereapi.com/v1/autocomplete?q=';
+    const convertedUrl = encodeURIComponent(
+      `${address.trim()} ${city.trimEnd()} ${number}`,
+    );
+
+    if (address.length > 3 || city.length > 3) {
+      const response = await fetch(`${URL}${convertedUrl}&apiKey=${API_KEY}`);
+      if (!response.ok) {
+        return;
+      }
+      const json = await response.json();
+      if (destinationType === 'originDestination') {
+        setSuggestions((prevState) => ({
+          ...prevState,
+          originDestination: [...json.items],
+        }));
+        return;
+      }
+
+      setSuggestions((prevState) => ({
+        ...prevState,
+        destination: [...json.items],
+      }));
+      return;
+    }
+  };
+
+  const apiDelay = useCallback(
+    debounce((data) => getAutoCompleted(data), 1000),
+    [],
+  );
+
   const handleUpdateForm = (
     e: React.ChangeEvent,
     target: 'originDestination' | 'destination',
@@ -47,50 +82,15 @@ const FormSection = ({
         ...prevState,
         [objectKey]: (e.target as HTMLInputElement).value,
       }));
+      apiDelay(destination);
       return;
     }
     setOriginDestination((prevState: DEF_STATE_TYPE) => ({
       ...prevState,
       [objectKey]: (e.target as HTMLInputElement).value,
     }));
+    apiDelay(originDestination);
   };
-
-  useEffect(() => {
-    const getAutoCompleted = async ({ address, city, number }: DEF_STATE_TYPE) => {
-      const URL = 'https://autocomplete.search.hereapi.com/v1/autocomplete?q=';
-      const convertedUrl = encodeURIComponent(
-        `${address.trim()} ${city.trimEnd()} ${number}`,
-      );
-
-      if (address.length > 3 || city.length > 3) {
-        const response = await fetch(`${URL}${convertedUrl}&apiKey=${API_KEY}`);
-        if (!response.ok) {
-          console.log(response.status);
-          return;
-        }
-        const json = await response.json();
-        if (destinationType === 'originDestination') {
-          setSuggestions((prevState) => ({
-            ...prevState,
-            originDestination: [...json.items],
-          }));
-          return;
-        }
-
-        setSuggestions((prevState) => ({
-          ...prevState,
-          destination: [...json.items],
-        }));
-        return;
-      }
-    };
-
-    if (destinationType === 'originDestination') {
-      getAutoCompleted(originDestination);
-    } else {
-      getAutoCompleted(destination);
-    }
-  }, [originDestination, destination]);
 
   return (
     <div className={inputSectionClassName}>

@@ -4,8 +4,6 @@ const API_KEY = 'Do-6dFFzyJeN6bfWULQxLu9cEICFZHNpJoPcuzy3U1w';
 import * as React from 'react';
 
 export const DisplayMapClass = ({ lat = 50, lng = 50 }) => {
-  console.log(lat, lng);
-
   // Create a reference to the HTML element we want to put the map on
   const mapRef = React.useRef(null);
 
