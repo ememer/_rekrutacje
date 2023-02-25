@@ -8,7 +8,7 @@ import {
 
 const API_KEY = 'Do-6dFFzyJeN6bfWULQxLu9cEICFZHNpJoPcuzy3U1w';
 
-import { DisplayMapClass } from './DisplayMapClass';
+import { Map } from './Map';
 
 const getGeoCode = async (targetAddress: DEF_STATE_TYPE) => {
   const URL = ' https://geocode.search.hereapi.com/v1/geocode?q=';
@@ -32,10 +32,14 @@ const DestinationMap = () => {
   const [pricePerKm, setPricePerKm] = useState<number | string>(1.2);
   const [validateError, setValidateError] = useState(false);
   const [routeStepByStep, setRouteStepByStep] = useState<any[]>([]);
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [startPoint, setStartPoint] = useState({
     lat: 50,
     lng: 50,
+  });
+  const [destPoint, setDestPoint] = useState({
+    lat: 0,
+    lng: 0,
   });
 
   useEffect(() => {
@@ -45,6 +49,10 @@ const DestinationMap = () => {
       setStartPoint({
         lat: originDestinationLoc[0].position?.lat,
         lng: originDestinationLoc[0].position?.lng,
+      });
+      setDestPoint({
+        lat: destinationLoc[0].position?.lat,
+        lng: destinationLoc[0].position?.lng,
       });
       const response = await fetch(
         `https://router.hereapi.com/v8/routes?transportMode=car&origin=${originDestinationLoc[0].position?.lat},${originDestinationLoc[0].position?.lng}&destination=${destinationLoc[0].position?.lat},${destinationLoc[0].position?.lng}&return=summary,polyline,turnbyturnactions&apikey=${API_KEY}`,
@@ -115,7 +123,14 @@ const DestinationMap = () => {
       ) : (
         <div className="w-full">
           <div className="w-3/4 mx-auto p-4">
-            <DisplayMapClass lat={startPoint.lat} lng={startPoint.lng} />
+            {/* <DisplayMapClass lat={startPoint.lat} lng={startPoint.lng} />
+             */}
+            <Map
+              lat={startPoint.lat}
+              lng={startPoint.lng}
+              destLat={destPoint.lat}
+              destLng={destPoint.lng}
+            />
           </div>
           <div className="w-3/4 mx-auto">
             <div className="w-full my-2 mx-auto flex flex-col">

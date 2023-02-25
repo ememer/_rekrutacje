@@ -90,6 +90,7 @@ const FormSection = ({
       [objectKey]: (e.target as HTMLInputElement).value,
     }));
     apiDelay(originDestination);
+    return;
   };
 
   return (
