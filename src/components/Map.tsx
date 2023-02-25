@@ -13,8 +13,8 @@ interface Props {
 }
 export const Map = ({ lat = 0, lng = 0, destLat = 0, destLng = 0 }: Props) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  // Create a reference to the HTML element we want to put the map on
 
+  //Init map with references
   const mapRef = React.useRef(null);
 
   useEffect(() => {
@@ -69,6 +69,8 @@ export const Map = ({ lat = 0, lng = 0, destLat = 0, destLng = 0 }: Props) => {
 
     new H.mapevents.Behavior(new H.mapevents.MapEvents(hMap));
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Unreachable code error
     const router = platform.getRoutingService(null, 8);
     router.calculateRoute(routingParameters, onResult, function (error) {
       alert(error.message);
