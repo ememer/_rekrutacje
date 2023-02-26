@@ -22,13 +22,10 @@ function App() {
   const [lastDestination, setLastDestination] = useState<any>([]);
   const [isStorage, setIsStorage] = useState(false);
   const handleSaveRoutes = () => {
-    setLastDestination(
-      (
-        prevState:
-          | []
-          | [[], [DEF_STATE_TYPE, DEF_STATE_TYPE, DEF_STATE_TYPE, DEF_STATE_TYPE]],
-      ) => [...prevState, [destination, originDestination]],
-    );
+    setLastDestination((prevState: [] | [[], [DEF_STATE_TYPE, DEF_STATE_TYPE]]) => [
+      ...prevState,
+      [destination, originDestination],
+    ]);
     setIsStorage(true);
   };
   useEffect(() => {
