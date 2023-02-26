@@ -1,10 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
 import FormSection from './components/FormSection';
+import RoutesHistory from './components/RoutesHistory';
 import { AutoCompleteContext } from './Context/AutoCompleteContext';
-import { AutoCompleteContextTypes } from './Types/AutoCompleteContextTypes';
+import {
+  AutoCompleteContextTypes,
+  DEF_STATE_TYPE,
+} from './Types/AutoCompleteContextTypes';
 
 import './App.css';
 
@@ -12,7 +16,23 @@ const btnEnabled = 'w-1/4 block ml-auto p-4 bg-green-500 text-gray-800';
 const btnDisabled = 'w-1/4 block ml-auto p-4 bg-gray-500 text-white';
 
 function App() {
-  const { isValid } = useContext(AutoCompleteContext) as AutoCompleteContextTypes;
+  const { isValid, destination, originDestination } = useContext(
+    AutoCompleteContext,
+  ) as AutoCompleteContextTypes;
+  const [lastDestination, setLastDestination] = useState<any>([]);
+
+  const handleSaveRoutes = () => {
+    setLastDestination(
+      (
+        prevState:
+          | []
+          | [[], [DEF_STATE_TYPE, DEF_STATE_TYPE, DEF_STATE_TYPE, DEF_STATE_TYPE]],
+      ) => [...prevState, [destination, originDestination]],
+    );
+  };
+  useEffect(() => {
+    localStorage.setItem('routes', JSON.stringify(lastDestination));
+  }, [lastDestination]);
 
   return (
     <div className="container mx-auto">
@@ -30,11 +50,16 @@ function App() {
           destinationType="destination"
         />
         <div className="p-2 w-full">
-          <button disabled={!isValid} className={isValid ? btnEnabled : btnDisabled}>
+          <button
+            onClick={() => handleSaveRoutes()}
+            disabled={!isValid}
+            className={isValid ? btnEnabled : btnDisabled}
+          >
             <Link to={isValid ? '/calculated-road' : '#'}>Oblicz trase</Link>
           </button>
         </div>
       </form>
+      <RoutesHistory />
     </div>
   );
 }
