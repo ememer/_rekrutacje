@@ -20,7 +20,7 @@ function App() {
     AutoCompleteContext,
   ) as AutoCompleteContextTypes;
   const [lastDestination, setLastDestination] = useState<any>([]);
-
+  const [isStorage, setIsStorage] = useState(false);
   const handleSaveRoutes = () => {
     setLastDestination(
       (
@@ -29,10 +29,14 @@ function App() {
           | [[], [DEF_STATE_TYPE, DEF_STATE_TYPE, DEF_STATE_TYPE, DEF_STATE_TYPE]],
       ) => [...prevState, [destination, originDestination]],
     );
+    setIsStorage(true);
   };
   useEffect(() => {
-    localStorage.setItem('routes', JSON.stringify(lastDestination));
-  }, [lastDestination]);
+    if (isStorage) {
+      localStorage.setItem('routes', JSON.stringify(lastDestination));
+      setIsStorage(false);
+    }
+  }, [lastDestination, isStorage]);
 
   return (
     <div className="container mx-auto">
@@ -50,12 +54,13 @@ function App() {
           destinationType="destination"
         />
         <div className="p-2 w-full">
-          <button
-            onClick={() => handleSaveRoutes()}
-            disabled={!isValid}
-            className={isValid ? btnEnabled : btnDisabled}
-          >
-            <Link to={isValid ? '/calculated-road' : '#'}>Oblicz trase</Link>
+          <button disabled={!isValid} className={isValid ? btnEnabled : btnDisabled}>
+            <Link
+              onClick={() => handleSaveRoutes()}
+              to={isValid ? '/calculated-road' : '#'}
+            >
+              Oblicz trase
+            </Link>
           </button>
         </div>
       </form>

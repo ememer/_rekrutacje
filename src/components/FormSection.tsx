@@ -2,8 +2,11 @@ import React, { useCallback, useContext, useState } from 'react';
 
 import { debounce } from 'lodash';
 
+import { ApiResponseContext } from '../Context/ApiResponseContext';
 import { AutoCompleteContext } from '../Context/AutoCompleteContext';
+import { useApiResponse } from '../Hook/useApiResponse';
 import { useForm } from '../Hook/useForm';
+import { ApiResponseContextType } from '../Types/ApiResponseContextTypes';
 import {
   AutoCompleteContextTypes,
   DEF_STATE_TYPE,
@@ -39,8 +42,10 @@ const FormSection = ({
     destinationType === 'originDestination' ? originDestination : destination,
   );
 
+  const { setErrorMessage } = useContext(ApiResponseContext) as ApiResponseContextType;
+
   const getAutoCompleted = async ({ address, city, number }: DEF_STATE_TYPE) => {
-    const URL = 'https://autocomplete.search.hereapi.com/v1/autocomplete?q=';
+    const URL = 'https://autocomplete.search.hereapi.com/vcc/autocomplete?q=';
     const convertedUrl = encodeURIComponent(
       `${address.trim()} ${city.trimEnd()} ${number}`,
     );
@@ -48,7 +53,8 @@ const FormSection = ({
     if (address.length > 3 || city.length > 3) {
       const response = await fetch(`${URL}${convertedUrl}&apiKey=${API_KEY}`);
       if (!response.ok) {
-        return;
+        const isErrorOccurred = useApiResponse(response);
+        setErrorMessage(isErrorOccurred);
       }
       const json = await response.json();
       if (destinationType === 'originDestination') {

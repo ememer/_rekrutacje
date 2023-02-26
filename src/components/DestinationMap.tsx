@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { ApiResponseContext } from '../Context/ApiResponseContext';
 import { AutoCompleteContext } from '../Context/AutoCompleteContext';
+import { useApiResponse } from '../Hook/useApiResponse';
+import { ApiResponseContextType } from '../Types/ApiResponseContextTypes';
 import {
   AutoCompleteContextTypes,
   DEF_STATE_TYPE,
@@ -28,6 +31,7 @@ const DestinationMap = () => {
   const { destination, originDestination } = useContext(
     AutoCompleteContext,
   ) as AutoCompleteContextTypes;
+  const { setErrorMessage } = useContext(ApiResponseContext) as ApiResponseContextType;
   const [routeDistance, setRouteDistance] = useState<number>(0);
   const [pricePerKm, setPricePerKm] = useState<number | string>(1.2);
   const [validateError, setValidateError] = useState(false);
@@ -57,7 +61,10 @@ const DestinationMap = () => {
       const response = await fetch(
         `https://router.hereapi.com/v8/routes?transportMode=car&origin=${originDestinationLoc[0].position?.lat},${originDestinationLoc[0].position?.lng}&destination=${destinationLoc[0].position?.lat},${destinationLoc[0].position?.lng}&return=summary,polyline,turnbyturnactions&apikey=${API_KEY}`,
       );
-
+      if (!response.ok) {
+        const isErrorOccurred = useApiResponse(response);
+        setErrorMessage(isErrorOccurred);
+      }
       const json = await response.json();
 
       setRouteStepByStep(json?.routes[0]?.sections[0]?.turnByTurnActions);

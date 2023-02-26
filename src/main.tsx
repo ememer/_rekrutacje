@@ -6,6 +6,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import DestinationMap from './components/DestinationMap';
 import Layout from './components/Layout';
+import ApiResponseContextProvider from './Context/ApiResponseContextProvider';
 import AutoCompleteContextProvider from './Context/AutoCompleteProvider';
 
 import './index.css';
@@ -26,9 +27,11 @@ const router = createBrowserRouter([
 
 ReactDOM.render(
   <React.StrictMode>
-    <AutoCompleteContextProvider>
-      <RouterProvider router={router} />
-    </AutoCompleteContextProvider>
+    <ApiResponseContextProvider>
+      <AutoCompleteContextProvider>
+        <RouterProvider router={router} />
+      </AutoCompleteContextProvider>
+    </ApiResponseContextProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );
