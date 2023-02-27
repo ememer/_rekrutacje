@@ -152,7 +152,7 @@ const DestinationMap = () => {
         </div>
       ) : (
         <CreatePdf>
-          <div className="w-full">
+          <div>
             <div className="w-3/4 mx-auto p-4">
               <Map
                 lat={startPoint.lat}

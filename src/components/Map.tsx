@@ -89,7 +89,7 @@ export const Map = ({ lat = 0, lng = 0, destLat = 0, destLng = 0 }: Props) => {
           <h1>Trwa ładowanie...</h1>
         </div>
       ) : null}
-      <div className="map w-full" ref={mapRef} style={{ height: '450px' }} />
+      <div className="map w-full" ref={mapRef} style={{ height: '300px' }} />
     </>
   );
 };
