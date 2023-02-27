@@ -7,11 +7,20 @@ const RoutesHistory = () => {
     [],
   );
 
+  // Last routes are stored in sessionStorage, to remove those at page refresh
+  const deleteStorage = (e: Event) => {
+    e.preventDefault(), sessionStorage.removeItem('routes');
+  };
+
   useEffect(() => {
+    // React on Page refresh
+    window.addEventListener('beforeunload', deleteStorage);
     const storage = sessionStorage.getItem('routes');
     if (storage) {
       setLastRoutes(JSON.parse(storage));
     }
+
+    return () => window.addEventListener('beforeunload', deleteStorage);
   }, []);
 
   return (
