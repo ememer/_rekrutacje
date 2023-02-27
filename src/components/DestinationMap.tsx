@@ -152,8 +152,8 @@ const DestinationMap = () => {
         </div>
       ) : (
         <CreatePdf>
-          <div>
-            <div className="w-3/4 p-4">
+          <div className="w-full">
+            <div className="w-3/4 mx-auto p-4">
               <Map
                 lat={startPoint.lat}
                 lng={startPoint.lng}
@@ -161,7 +161,7 @@ const DestinationMap = () => {
                 destLng={destPoint.lng}
               />
             </div>
-            <div className="w-3/4">
+            <div className="w-3/4 mx-auto">
               <div className="w-full my-2 mx-auto flex flex-col">
                 <h2 className="w-full">Ustaw stawkę za 1km</h2>
                 <input

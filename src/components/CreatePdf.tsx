@@ -15,10 +15,13 @@ const CreatePdf = ({ children }: Props) => {
       unit: 'px',
       putOnlyUsedFonts: true,
       floatPrecision: 'smart',
+      precision: 20,
+      hotfixes: ['px_scaling'],
+      compress: true,
     });
 
     // Adding the fonts.
-    doc.setFont('Inter-Regular', 'normal');
+    doc.setFont('Times', 'Roman');
 
     doc.html(reportTemplateRef.current as HTMLElement, {
       async callback(doc) {
@@ -29,8 +32,11 @@ const CreatePdf = ({ children }: Props) => {
 
   return (
     <div className="container">
-      <button className="button" onClick={handleGeneratePdf}>
-        Generate PDF
+      <button
+        className="button block mx-auto p-2 my-4 rounded-md bg-indigo-600 text-white"
+        onClick={handleGeneratePdf}
+      >
+        Wygeneruj PDF
       </button>
       <div className="mx-auto block" ref={reportTemplateRef}>
         {children}
