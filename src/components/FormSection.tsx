@@ -44,8 +44,10 @@ const FormSection = ({
 
   const { setErrorMessage } = useContext(ApiResponseContext) as ApiResponseContextType;
 
+  // Autocomplete address
+
   const getAutoCompleted = async ({ address, city, number }: DEF_STATE_TYPE) => {
-    const URL = 'https://autocomplete.search.hereapi.com/vcc/autocomplete?q=';
+    const URL = 'https://autocomplete.search.hereapi.com/v1/autocomplete?q=';
     const convertedUrl = encodeURIComponent(
       `${address.trim()} ${city.trimEnd()} ${number}`,
     );
@@ -72,6 +74,8 @@ const FormSection = ({
       return;
     }
   };
+
+  // Debounce call api
 
   const apiDelay = useCallback(
     debounce((data) => getAutoCompleted(data), 1000),

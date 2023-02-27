@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import FormSection from './components/FormSection';
 import RoutesHistory from './components/RoutesHistory';
 import { AutoCompleteContext } from './Context/AutoCompleteContext';
-import {
-  AutoCompleteContextTypes,
-  DEF_STATE_TYPE,
-} from './Types/AutoCompleteContextTypes';
+import { AutoCompleteContextTypes } from './Types/AutoCompleteContextTypes';
 
 import './App.css';
 
@@ -16,24 +14,8 @@ const btnEnabled = 'w-1/4 block ml-auto p-4 bg-green-500 text-gray-800';
 const btnDisabled = 'w-1/4 block ml-auto p-4 bg-gray-500 text-white';
 
 function App() {
-  const { isValid, destination, originDestination } = useContext(
-    AutoCompleteContext,
-  ) as AutoCompleteContextTypes;
-  const [lastDestination, setLastDestination] = useState<any>([]);
-  const [isStorage, setIsStorage] = useState(false);
-  const handleSaveRoutes = () => {
-    setLastDestination((prevState: [] | [[], [DEF_STATE_TYPE, DEF_STATE_TYPE]]) => [
-      ...prevState,
-      [destination, originDestination],
-    ]);
-    setIsStorage(true);
-  };
-  useEffect(() => {
-    if (isStorage) {
-      localStorage.setItem('routes', JSON.stringify(lastDestination));
-      setIsStorage(false);
-    }
-  }, [lastDestination, isStorage]);
+  const { isValid } = useContext(AutoCompleteContext) as AutoCompleteContextTypes;
+  const navigate = useNavigate();
 
   return (
     <div className="container mx-auto">
@@ -51,13 +33,14 @@ function App() {
           destinationType="destination"
         />
         <div className="p-2 w-full">
-          <button disabled={!isValid} className={isValid ? btnEnabled : btnDisabled}>
-            <Link
-              onClick={() => handleSaveRoutes()}
-              to={isValid ? '/calculated-road' : '#'}
-            >
-              Oblicz trase
-            </Link>
+          <button
+            onClick={() => {
+              navigate('/calculated-road');
+            }}
+            disabled={!isValid}
+            className={isValid ? btnEnabled : btnDisabled}
+          >
+            Oblicz trase
           </button>
         </div>
       </form>

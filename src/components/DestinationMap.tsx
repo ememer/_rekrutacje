@@ -46,6 +46,8 @@ const DestinationMap = () => {
     lng: 0,
   });
 
+  // Fetch route
+
   useEffect(() => {
     const calculateRoute = async () => {
       const originDestinationLoc = await getGeoCode(originDestination);
@@ -77,10 +79,14 @@ const DestinationMap = () => {
     calculateRoute();
   }, [originDestination, destination]);
 
+  // Calculate price per km
+
   const calculatePrice = () => {
     const price = ((routeDistance as number) / 1000) * +pricePerKm * 1.1;
     return +parseFloat(`${price}`).toFixed(2);
   };
+
+  // Counting daily trip ability
 
   const dailyTripAbility = (distance: number, sumPrice: number) => {
     if ((distance as number) / 1000 / 800 > 1 || sumPrice / 1000 > 1) {
@@ -93,6 +99,8 @@ const DestinationMap = () => {
     }
     return 1;
   };
+
+  // Validate input price
 
   const validatePrice = (e: React.ChangeEvent) => {
     setValidateError(false);
@@ -118,6 +126,19 @@ const DestinationMap = () => {
     return;
   };
 
+  // Set or update storage
+
+  useEffect(() => {
+    const storage = localStorage;
+    const newStorageItem = [originDestination, destination];
+    if (storage.getItem('routes')) {
+      const prevStorage = JSON.parse(storage.getItem('routes') as string);
+      storage.setItem('routes', JSON.stringify([...prevStorage, newStorageItem]));
+      return;
+    }
+    storage.setItem('routes', JSON.stringify([newStorageItem]));
+  }, []);
+
   return (
     <>
       {!isLoaded ? (
@@ -130,8 +151,6 @@ const DestinationMap = () => {
       ) : (
         <div className="w-full">
           <div className="w-3/4 mx-auto p-4">
-            {/* <DisplayMapClass lat={startPoint.lat} lng={startPoint.lng} />
-             */}
             <Map
               lat={startPoint.lat}
               lng={startPoint.lng}
