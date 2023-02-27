@@ -131,7 +131,7 @@ const DestinationMap = () => {
   // Set or update storage
 
   useEffect(() => {
-    const storage = localStorage;
+    const storage = sessionStorage;
     const newStorageItem = [originDestination, destination];
     if (storage.getItem('routes')) {
       const prevStorage = JSON.parse(storage.getItem('routes') as string);

@@ -8,7 +8,7 @@ const RoutesHistory = () => {
   );
 
   useEffect(() => {
-    const storage = localStorage.getItem('routes');
+    const storage = sessionStorage.getItem('routes');
     if (storage) {
       setLastRoutes(JSON.parse(storage));
     }
