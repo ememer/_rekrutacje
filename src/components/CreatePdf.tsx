@@ -40,7 +40,7 @@ const CreatePdf = ({ children }: Props) => {
   return (
     <div
       className={
-        shouldGenerate ? 'transition transform delay-200 container w-2/4' : 'container'
+        shouldGenerate ? 'transition transform delay-200 container md:w-2/4' : 'container'
       }
     >
       <button
