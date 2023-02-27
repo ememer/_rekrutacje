@@ -9,6 +9,8 @@ import {
   DEF_STATE_TYPE,
 } from '../Types/AutoCompleteContextTypes';
 
+import CreatePdf from './CreatePdf';
+
 const API_KEY = 'Do-6dFFzyJeN6bfWULQxLu9cEICFZHNpJoPcuzy3U1w';
 
 import { Map } from './Map';
@@ -149,79 +151,81 @@ const DestinationMap = () => {
           </div>
         </div>
       ) : (
-        <div className="w-full">
-          <div className="w-3/4 mx-auto p-4">
-            <Map
-              lat={startPoint.lat}
-              lng={startPoint.lng}
-              destLat={destPoint.lat}
-              destLng={destPoint.lng}
-            />
-          </div>
-          <div className="w-3/4 mx-auto">
-            <div className="w-full my-2 mx-auto flex flex-col">
-              <h2 className="w-full">Ustaw stawkę za 1km</h2>
-              <input
-                className="border border-blue-300 w-1/4 rounded-md p-2 px-4 my-2"
-                value={pricePerKm}
-                onChange={(e) => validatePrice(e)}
-                placeholder="Stawka za km"
+        <CreatePdf>
+          <div>
+            <div className="w-3/4 p-4">
+              <Map
+                lat={startPoint.lat}
+                lng={startPoint.lng}
+                destLat={destPoint.lat}
+                destLng={destPoint.lng}
               />
-              {validateError && (
-                <span className="w-full text-red-300">Podaj prawidłową wartość!</span>
-              )}
             </div>
-            <div className="w-full flex justify-between">
-              <div className="w-1/4">
-                <h2>Trase pokonasz w:</h2>
-                {`${dailyTripAbility(routeDistance as number, calculatePrice())} ${
-                  dailyTripAbility(routeDistance as number, calculatePrice()) === 1
-                    ? 'dzień'
-                    : 'dni'
-                }`}
+            <div className="w-3/4">
+              <div className="w-full my-2 mx-auto flex flex-col">
+                <h2 className="w-full">Ustaw stawkę za 1km</h2>
+                <input
+                  className="border border-blue-300 w-1/4 rounded-md p-2 px-4 my-2"
+                  value={pricePerKm}
+                  onChange={(e) => validatePrice(e)}
+                  placeholder="Stawka za km"
+                />
+                {validateError && (
+                  <span className="w-full text-red-300">Podaj prawidłową wartość!</span>
+                )}
               </div>
-              <div className="w-1/4">
-                <h2>Koszt:</h2>
-                {`${calculatePrice()} PLN`}
+              <div className="w-full flex justify-between">
+                <div className="w-1/4">
+                  <h2>Trase pokonasz w:</h2>
+                  {`${dailyTripAbility(routeDistance as number, calculatePrice())} ${
+                    dailyTripAbility(routeDistance as number, calculatePrice()) === 1
+                      ? 'dzień'
+                      : 'dni'
+                  }`}
+                </div>
+                <div className="w-1/4">
+                  <h2>Koszt:</h2>
+                  {`${calculatePrice()} PLN`}
+                </div>
+                <div className="w-1/4">
+                  <h2>Dystans:</h2>
+                  {`${parseFloat(`${routeDistance / 1000}`).toFixed(2)} km`}
+                </div>
               </div>
-              <div className="w-1/4">
-                <h2>Dystans:</h2>
-                {`${parseFloat(`${routeDistance / 1000}`).toFixed(2)} km`}
+              <div>
+                <ul className=" shadow-sm p-2 px-4 my-4">
+                  {routeStepByStep &&
+                    routeStepByStep.map((steps, idx) => (
+                      <li className="bg-blue-300 p-2 my-4 rounded-md" key={idx}>
+                        <div className="flex items-center">
+                          <h2 className="p-2">Krok: {steps.action}</h2>
+                          <span className="ml-4">Kierunek: {steps?.direction}</span>
+                        </div>
+                        <div className="w-full bg-blue-100 rounded-md">
+                          {steps?.currentRoad?.name && (
+                            <div className="w-full p-4">
+                              <span>Aktualna droga:</span>
+                              {steps?.currentRoad?.name && (
+                                <h2>{steps?.currentRoad?.name[0].value}</h2>
+                              )}
+                            </div>
+                          )}
+                          {steps?.nextRoad?.name && (
+                            <div className="pl-6 p-4 bg-blue-50 rounded-md">
+                              <span>Kieruj się:</span>
+                              {steps?.nextRoad?.name && (
+                                <h2>{steps?.nextRoad?.name[0].value}</h2>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                </ul>
               </div>
-            </div>
-            <div>
-              <ul className=" shadow-sm p-2 px-4 my-4">
-                {routeStepByStep &&
-                  routeStepByStep.map((steps, idx) => (
-                    <li className="bg-blue-300 p-2 my-4 rounded-md" key={idx}>
-                      <div className="flex items-center">
-                        <h2 className="p-2">Krok: {steps.action}</h2>
-                        <span className="ml-4">Kierunek: {steps?.direction}</span>
-                      </div>
-                      <div className="w-full bg-blue-100 rounded-md">
-                        {steps?.currentRoad?.name && (
-                          <div className="w-full p-4">
-                            <span>Aktualna droga:</span>
-                            {steps?.currentRoad?.name && (
-                              <h2>{steps?.currentRoad?.name[0].value}</h2>
-                            )}
-                          </div>
-                        )}
-                        {steps?.nextRoad?.name && (
-                          <div className="pl-6 p-4 bg-blue-50 rounded-md">
-                            <span>Kieruj się:</span>
-                            {steps?.nextRoad?.name && (
-                              <h2>{steps?.nextRoad?.name[0].value}</h2>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-              </ul>
             </div>
           </div>
-        </div>
+        </CreatePdf>
       )}
     </>
   );

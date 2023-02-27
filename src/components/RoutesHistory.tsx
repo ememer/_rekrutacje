@@ -13,7 +13,7 @@ const RoutesHistory = () => {
       setLastRoutes(JSON.parse(storage));
     }
   }, []);
-  console.log(lastRoutes);
+
   return (
     <ul className="mx-auto my-4 w-3/4  px-4">
       <h2 className="text-2xl text-center">Ostatnie wyszukiwania</h2>
