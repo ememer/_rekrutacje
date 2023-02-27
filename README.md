@@ -1,37 +1,51 @@
-# Vite + React + Typescript + Eslint + Prettier
+DEMO LINK:
 
-A starter for React with Typescript with the fast Vite and all static code testing with Eslint and formatting with Prettier.
+https://scintillating-tapioca-5a2a51.netlify.app/
 
-![Vite + React + Typescript + Eslint + Prettier](/resources/screenshot.png)
 
-I found out about Vite and I wanted to have a boilerplate for the technologies that I use. You can find more about these in the following links: [Vite](https://github.com/vitejs/vite), [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [Eslint](https://eslint.org/), [Prettier](https://prettier.io/).
+# DailyFeeder - News app 
 
-## Installation
+Application made for the purpose of recruitment
 
-Clone the repo and run `yarn install`
+The application allows you to generate routes between addresses, display on the map, read directions, save in pdf
 
-or Run command
 
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/ememer/_rekrutacje.git
 ```
-npx degit TheSwordBreaker/vite-reactts-eslint-prettier project-name
+
+Go to the project directory
+
+```bash
+  cd my-project
 ```
 
-## Start
+Install dependencies
 
-After the successfull installation of the packages: `yarn dev`
+```bash
+  npm install
+```
 
-## Steps in Vscode
+Start the server
 
-#### (works with better with this template)
+```bash
+  npm run dev
+```
 
-1. Install Eslint and prettier extension for vs code.
-2. Make Sure Both are enabled
-3. Make sure all packages are Installed. (Mostly Eslint and prettier in node_modules)
-4. Enable formatOnSave of vs code
-5. Open a .tsx file and check if the bottom right corners of vs code have Eslint and Prettier with a double tick
 
-![Screenshot (253)_LI](https://user-images.githubusercontent.com/52120562/162486286-7383a737-d555-4f9b-a4dd-c4a81deb7b96.jpg)
+## ## Thirparty liblarys and API used in project
 
-If Everything is Good Then It Should Work, but let me new if something else happens
+[HERE map](https://www.developer.here.com/)
 
-Made with ❤️ by theSwordBreaker(we Destory all types of sword ⚡)
+[jsPDF](https://artskydj.github.io/jsPDF/docs/jsPDF.html)
+
+
+## Thirparty liblarys used in project
+
+**Client:** React - Vite, TypeScript, TailwindCSS
+
+
