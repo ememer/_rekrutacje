@@ -3,8 +3,6 @@ DEMO LINK:
 https://scintillating-tapioca-5a2a51.netlify.app/
 
 
-# DailyFeeder - News app 
-
 Application made for the purpose of recruitment
 
 The application allows you to generate routes between addresses, display on the map, read directions, save in pdf
